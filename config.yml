@@ -1,0 +1,43 @@
+# =============================================================================
+# Experiment configuration
+# -----------------------------------------------------------------------------
+# Switch condition by editing `active_condition` below (then restart backend:
+#   docker compose restart backend
+# or override without touching this file:
+#   CONDITION=one_human_two_ai docker compose up --build          (bash)
+#   $env:CONDITION="one_human_two_ai"; docker compose up --build  (PowerShell)
+# =============================================================================
+
+active_condition: two_humans_one_ai
+
+experiment:
+  labels: [A, B, C]              # neutral identifiers shown to participants
+  rounds: 2
+  round_duration_sec: 60         # discussion time per round
+  vote_duration_sec: 30          # max voting window per round (ends early once everyone voted)
+  between_rounds_sec: 6          # pause showing intermediate feedback
+  show_intermediate_results: true
+  shuffle_labels: true           # randomize which letter(s) the AI agent(s) get
+  matching_delay_sec: [3, 8]     # random delay after the room fills, so start time
+                                 # does not reveal how many humans were needed
+  waiting_timeout_sec: 300       # a human waiting longer than this is told to try again
+                                 # later and disconnected (0 = wait forever)
+
+conditions:
+  three_humans:
+    participants: [human, human, human]
+  two_humans_one_ai:
+    participants: [human, human, ai]
+  one_human_two_ai:
+    participants: [human, ai, ai]
+
+ai:
+  # rule_based | openai | anthropic
+  # LLM providers need OPENAI_API_KEY / ANTHROPIC_API_KEY in .env.
+  # If the key is missing or a call fails, the agent falls back to rule_based.
+  provider: rule_based
+  openai_model: gpt-4o-mini
+  anthropic_model: claude-haiku-5-5
+  max_messages_per_round: 3
+  first_message_delay_sec: [4, 12]
+  typing_speed_chars_per_sec: 12  # simulated human typing delay
