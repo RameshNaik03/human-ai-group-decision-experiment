@@ -5,10 +5,8 @@
 | Tool / agent | Model | Used for |
 |---|---|---|
 | Claude (claude.ai, agentic mode with a cloud workspace: file editing, shell, headless browser) | **Claude Opus 5.5** (`claude-opus-5-5`) | Reading the brief, planning, architecture, writing all code, testing, README |
+| Claude Code (VS Code extension) | **Claude Opus 5.5** (`claude-opus-5-5`) | Second iteration (Prompt 15) and final repo cleanup (Prompt 43) |
 | VS Code | n/a | Reviewing code, running the project locally, final edits, pushing to GitHub |
-| Claude Code (VS Code extension, agentic: file read/edit, PowerShell, Docker) | **Claude Opus 5.5** (`claude-opus-5-5`) | Prompt 4: voting UX, waiting-room timeout, disconnect robustness, Windows docs, Docker verification |
-
-> Add a row here for any other assistant you use (e.g. Copilot inside VS Code) and log its prompts below.
 
 ## Workflow summary
 
@@ -22,7 +20,10 @@
    - unit check of the **tie-break** logic (majority, round-1 tie-break, random draw, zero votes),
    - a **headless Chromium** run clicked through intro → waiting → chat → vote → feedback → results.
    - It could not run `docker compose` in its workspace (Docker Hub blocked), so the first Docker run was done locally.
-5. I downloaded the project, opened it in VS Code, ran `docker compose up --build`, tested, and pushed.
+5. Downloaded the project, opened it in VS Code, ran `docker compose up --build` and played a full session; testing showed votes being missed in the 20 s window.
+6. Asked Claude (claude.ai) to write an improvement prompt and ran it in Claude Code (Prompt 15): voting UX, waiting-room timeout, robustness fixes, Windows docs, 33/33 scenario checks.
+7. Shared Claude Code's report back with Claude for review; Claude cloned the public GitHub repo and re-tested all three conditions.
+8. Pushed to GitHub, renamed the repo, and used Claude Code to clean up the repo and finish this log (Prompt 43).
 
 ## Prompts (verbatim, in order)
 
@@ -42,7 +43,63 @@ don't push any code until the assignment completes
 i would like  use the vs code
 ```
 
-### Prompt 4 (Claude Code in VS Code – Claude Opus 5.5, `claude-opus-5-5`)
+### Prompt 4 (Claude Opus 5.5, claude.ai)
+```
+what is next
+```
+
+### Prompt 5
+```
+i have the file in vs code
+```
+
+### Prompt 6
+```
+how do i run this in vs code
+```
+
+### Prompt 7
+```
+docker runns successfully i think
+```
+
+### Prompt 8
+```
+[pasted the `docker compose up` terminal output: frontend/backend startup logs]
+```
+
+### Prompt 9 (pasted a line the AI player wrote in the chat)
+```
+what do you think the decision maker will have to do?
+```
+
+### Prompt 10
+```
+i am getting responeses from player a
+```
+
+### Prompt 11
+```
+[screenshot of the Results screen: Player B elected, round tallies A0/B1/C0 and A0/B2/C0]
+```
+
+### Prompt 12
+```
+[pasted PowerShell output: `service "db" is not running`]
+```
+
+### Prompt 13
+```
+[pasted backend restart logs]
+```
+
+### Prompt 14
+```
+give me a prompt to fix and complete the work of the whole assessment
+```
+→ Claude wrote the improvement prompt below, which I then ran in Claude Code (Prompt 15).
+
+### Prompt 15 (Claude Code in VS Code – Claude Opus 5.5, `claude-opus-5-5`)
 ```
 You are working in my repository `chm-experiment`, my submission for a technical assessment:
 a 3-participant real-time group decision experiment (React + FastAPI WebSockets + PostgreSQL,
@@ -114,5 +171,230 @@ RULES:
     - every human leaving (session removed, no AI tasks left),
     - waiting-room timeout,
     - rejoin after leaving.
+
+### Prompt 16 (Claude Opus 5.5, claude.ai)
+```
+[shared Claude Code's completion report (attachment) back with Claude for review]
+```
+
+### Prompt 17
+```
+[pasted the list of prompts 4–15 for this log] shall i submit this code now to claude
+```
+
+### Prompt 18
+```
+[pasted `git status` output: nothing to commit, working tree clean]
+```
+
+### Prompt 19
+```
+[pasted `git log --oneline` / `git ls-files` output]
+```
+
+### Prompt 20 (quoted Claude's instruction)
+```
+1. Create a public repo at https://github.com/new named `chm-experiment`, with nothing else added.
+```
+
+### Prompt 21
+```
+how do i do this
+```
+
+### Prompt 22
+```
+i dont see anything after pressing ctrl and shift and g
+```
+
+### Prompt 23
+```
+[pasted terminal prompt]
+```
+
+### Prompt 24
+```
+[pasted `git remote -v` output (empty)]
+```
+
+### Prompt 25
+```
+[pasted `git remote add` usage error]
+```
+
+### Prompt 26
+```
+so the technical is complete now right ?
+```
+
+### Prompt 27
+```
+[uploaded a zip of the project] check one again is everything perfectly done or not ?
+```
+
+### Prompt 28
+```
+wait it's a wrong file
+```
+
+### Prompt 29
+```
+[uploaded the correct project zip]
+```
+
+### Prompt 30
+```
+[pasted the CHM invitation email] write a reply to this email
+```
+
+### Prompt 31
+```
+before submiting the email i would like to change the repo name ?
+```
+
+### Prompt 32
+```
+[pasted `git remote set-url` output with the placeholder URL NEW-NAME]
+```
+
+### Prompt 33
+```
+[pasted `git remote -v` output showing the placeholder YOUR-REAL-NAME]
+```
+
+### Prompt 34
+```
+[answered Claude's question: chose repo name "human-ai-group-decision"]
+```
+
+### Prompt 35
+```
+[pasted `git push` output: Repository not found]
+```
+
+### Prompt 36
+```
+rename changed in github
+```
+
+### Prompt 37
+```
+https://github.com/RameshNaik03/human-ai-group-decision-experiment
+```
+
+### Prompt 38
+```
+[pasted `git remote -v` output after set-url]
+```
+
+### Prompt 39
+```
+[pasted git output showing an untracked `chm-experiment/` folder]
+```
+
+### Prompt 40
+```
+[attached terminal log: `dir` of the duplicate chm-experiment folder]
+```
+
+### Prompt 41
+```
+[pasted Copy-Item error: ai_prompts.md not found in Downloads]
+```
+
+### Prompt 42
+```
+give me a promot and fix the issue and maitnain a clean repo
+```
+
+### Prompt 43 (Claude Code in VS Code – Claude Opus 5.5, `claude-opus-5-5`)
+````
+Finalize my assessment repo and keep it clean. Work only in this folder (the git repo root,
+the one containing docker-compose.yml). Remote: https://github.com/RameshNaik03/human-ai-group-decision-experiment.git
+
+TASK 1 – Remove the accidental duplicate
+There is an untracked nested folder `chm-experiment/` inside the repo root. It is a stray copy of the
+project (it even has its own .git). Confirm it is untracked (`git status`) and not referenced anywhere,
+then delete it completely. Do not touch any other file or folder.
+
+TASK 2 – Complete ai_prompts.md (the assessment requires ALL prompts, in order)
+a) In the "Tools & models" table, add this row above the VS Code row:
+   | Claude Code (VS Code extension) | **Claude Opus 5.5** (`claude-opus-5-5`) | Second iteration (Prompt 15) and final repo cleanup (Prompt 43) |
+   Remove the line "> Add a row here for any other assistant..." if present.
+b) Replace step 5 of "Workflow summary" with:
+   5. Downloaded the project, opened it in VS Code, ran `docker compose up --build` and played a full session; testing showed votes being missed in the 20 s window.
+   6. Asked Claude (claude.ai) to write an improvement prompt and ran it in Claude Code (Prompt 15): voting UX, waiting-room timeout, robustness fixes, Windows docs, 33/33 scenario checks.
+   7. Shared Claude Code's report back with Claude for review; Claude cloned the public GitHub repo and re-tested all three conditions.
+   8. Pushed to GitHub, renamed the repo, and used Claude Code to clean up the repo and finish this log (Prompt 43).
+c) The existing heading "### Prompt 4 (Claude Code in VS Code – Claude Opus 5.5, `claude-opus-5-5`)" must become
+   "### Prompt 15 (Claude Code in VS Code – Claude Opus 5.5, `claude-opus-5-5`)". Keep its content unchanged.
+d) Directly ABOVE that Prompt 15 heading, insert prompts 4–14. Directly BELOW the Prompt 15 section (before the
+   trailing "<!-- Append every further prompt ... -->" comment, keep that comment last), insert prompts 16–43.
+   Format each one exactly like the existing entries: a "### Prompt N" heading (with the note in parentheses if given)
+   followed by the text in a ``` code block. Text in [square brackets] describes a non-text input; keep it as written.
+
+   Prompts 4–14 (Claude Opus 5.5, claude.ai):
+   4  what is next
+   5  i have the file in vs code
+   6  how do i run this in vs code
+   7  docker runns successfully i think
+   8  [pasted the `docker compose up` terminal output: frontend/backend startup logs]
+   9  what do you think the decision maker will have to do?   (note: pasted a line the AI player wrote in the chat)
+   10 i am getting responeses from player a
+   11 [screenshot of the Results screen: Player B elected, round tallies A0/B1/C0 and A0/B2/C0]
+   12 [pasted PowerShell output: `service "db" is not running`]
+   13 [pasted backend restart logs]
+   14 give me a prompt to fix and complete the work of the whole assessment
+      → after the code block add the line: "→ Claude wrote the improvement prompt below, which I then ran in Claude Code (Prompt 15)."
+
+   Prompts 16–42 (Claude Opus 5.5, claude.ai):
+   16 [shared Claude Code's completion report (attachment) back with Claude for review]
+   17 [pasted the list of prompts 4–15 for this log] shall i submit this code now to claude
+   18 [pasted `git status` output: nothing to commit, working tree clean]
+   19 [pasted `git log --oneline` / `git ls-files` output]
+   20 1. Create a public repo at https://github.com/new named `chm-experiment`, with nothing else added.   (note: quoted Claude's instruction)
+   21 how do i do this
+   22 i dont see anything after pressing ctrl and shift and g
+   23 [pasted terminal prompt]
+   24 [pasted `git remote -v` output (empty)]
+   25 [pasted `git remote add` usage error]
+   26 so the technical is complete now right ?
+   27 [uploaded a zip of the project] check one again is everything perfectly done or not ?
+   28 wait it's a wrong file
+   29 [uploaded the correct project zip]
+   30 [pasted the CHM invitation email] write a reply to this email
+   31 before submiting the email i would like to change the repo name ?
+   32 [pasted `git remote set-url` output with the placeholder URL NEW-NAME]
+   33 [pasted `git remote -v` output showing the placeholder YOUR-REAL-NAME]
+   34 [answered Claude's question: chose repo name "human-ai-group-decision"]
+   35 [pasted `git push` output: Repository not found]
+   36 rename changed in github
+   37 https://github.com/RameshNaik03/human-ai-group-decision-experiment
+   38 [pasted `git remote -v` output after set-url]
+   39 [pasted git output showing an untracked `chm-experiment/` folder]
+   40 [attached terminal log: `dir` of the duplicate chm-experiment folder]
+   41 [pasted Copy-Item error: ai_prompts.md not found in Downloads]
+   42 give me a promot and fix the issue and maitnain a clean repo
+
+   Prompt 43 (Claude Code in VS Code – Claude Opus 5.5, `claude-opus-5-5`):
+   43 this entire prompt, verbatim, followed by a 3–5 line summary of what you did.
+
+TASK 3 – Repo hygiene
+- Make sure .gitignore covers: node_modules/, dist/, __pycache__/, *.pyc, .env, .venv/, .DS_Store, .vscode/
+- Check `git ls-files` contains no node_modules, dist, __pycache__, .env or nested project copies.
+- config.yml must have `active_condition: two_humans_one_ai`. Do not change any other code or behavior.
+
+TASK 4 – Verify, commit, push (I authorize pushing for this task)
+- `git remote -v` must point to https://github.com/RameshNaik03/human-ai-group-decision-experiment.git; fix it if not.
+- `git status` must show only ai_prompts.md (and .gitignore if changed) as modified, nothing untracked.
+- Show me `git diff --stat`, then commit with the message "Complete AI usage log and clean repo" and run `git push origin main`.
+- Finally run `git status` and `git log --oneline -3` and report the results, plus the number of "### Prompt" headings in ai_prompts.md (expected 43).
+````
+
+**What Claude Code did (summary):**
+- Task 1: `git status` was clean, and the only copy of the project on disk is this repo. The nested `chm-experiment/` duplicate no longer existed, so nothing was deleted.
+- Task 2: completed this log. Added prompts 4–14 and 16–43, renumbered the earlier Claude Code prompt to 15, updated the tools table and the workflow summary.
+- Task 3: `.gitignore` already covered every required pattern. `git ls-files` has no build output, secrets or nested copies, and `config.yml` uses `two_humans_one_ai`. No code changed.
+- Task 4: checked the remote, then committed only `ai_prompts.md` as "Complete AI usage log and clean repo" and pushed it to `origin/main`.
 
 <!-- Append every further prompt below, in order, with the tool/model used. -->
